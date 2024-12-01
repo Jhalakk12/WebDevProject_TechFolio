@@ -34,17 +34,18 @@ Techfolio is a streamlined and functional portfolio website designed to connect 
 -----------------------------------------------------
 
 ## Commands
+
 cd TechFolio-Express-Mongo-EJS-Handlebar
 
-### Run the following command and follow the prompts to create a package.json file::
+Run the following command and follow the prompts to create a package.json file::
 npm init -y
 
-### Update package.json to include dependencies : express, EJS, mongoose and express-handlebars
+Update package.json to include dependencies : express, EJS, mongoose and express-handlebars
 
-### Install the depenencies
+Install the depenencies:
 npm install
 
-###Start the app
+Start the app:
 npm run dev
 ---------------------------------------------
 
