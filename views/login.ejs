@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Correct path for the CSS file -->
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>TechFolio</title>
+  </head>
+
+  <body background="/img/bg-1.png">
+    <!-- Include Header -->
+    <%- include('partials/login-header') %>
+
+    <div class="content">
+      <div class="welcome">
+        <h2>Welcome!</h2>
+        <p>Keep your profile up to date and make yourself visible.</p>
+        <p>
+          <br />Log in to showcase your skills, update your profile, and ensure
+          you're always putting your best foot forward. Staying ahead in your
+          career journey starts with making sure your profile reflects your most
+          recent accomplishments and capabilities.
+        </p>
+      </div>
+      <hr />
+      <div class="login">
+        <!-- Correct path for the image -->
+        <img src="/img/person-white.png" alt="user" />
+        <h2>Login</h2>
+        <div class="login_form">
+          <h4>Email ID</h4>
+          <input
+            type="email"
+            name="email"
+            id="email"
+            placeholder="Enter your email"
+          />
+          <h4>Password</h4>
+          <input
+            type="password"
+            name="password"
+            id="password"
+            placeholder="Enter your password"
+          />
+        </div>
+
+        <div class="login-right-align">
+          <br />
+          <!-- Updated route for Admin Login -->
+          <a href="/studentadmin" class="boxlight" onclick="validateForm(event)">Admin Login</a>
+          &nbsp;&nbsp;
+          <!-- Updated route for Student Login -->
+          <a href="/skill" class="boxlight" onclick="validateForm(event)">Student Login</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Include Footer -->
+    <%- include('partials/footer') %>
+
+    <script>
+      // Function to validate the form
+      function validateForm(event) {
+        // Get the email and password values
+        const email = document.getElementById("email").value;
+        const password = document.getElementById("password").value;
+
+        // Regular expression to check if the email is in a valid format
+        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+
+        // Check if email and password fields are filled
+        if (!email || !password) {
+          alert("Please fill in both email and password fields.");
+          event.preventDefault(); // Prevent form submission
+          return false;
+        }
+
+        // Check if the email format is valid
+        if (!emailPattern.test(email)) {
+          alert("Please enter a valid email address.");
+          event.preventDefault(); // Prevent form submission
+          return false;
+        }
+
+        // If all validations pass, the form can be submitted
+        return true;
+      }
+    </script>
+  </body>
+</html>

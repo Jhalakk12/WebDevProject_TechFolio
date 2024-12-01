@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>TechFolio - Student Profile(Skills)</title>
+  </head>
+
+  <body>
+    <!-- Include Header -->
+    <%- include('partials/header') %>
+
+    <main>
+      <div class="student">
+        <h3>STUDENT'S PROFILE</h3>
+        <p>Student's Registration Number: 23057XX</p>
+      </div>
+      <div><hr /></div>
+      <div class="container">
+        <div>
+          <a href="/skill" class="box selected">SKILLS</a>
+        </div>
+        <div>
+          <a href="/blog" class="box">BLOG / ARTICLE</a>
+        </div>
+      </div>
+
+      <div style="overflow-x: auto">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>SKILL</th>
+              <th>PROFICIENCY</th>
+              <th>CERTIFICATION NAME</th>
+              <th>ISSUING AUTHORITY</th>
+              <th>DATE ISSUED</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="skills-list">
+            <!-- Rows will be dynamically inserted here -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>
+                <button class="no-border" onclick="addNewRow()">
+                  <img
+                    src="/img/plusbutton.png"
+                    alt="Add Row"
+                    class="iconstyle"
+                  />
+                </button>
+              </td>
+              <td colspan="6"></td>
+            </tr>
+            <tr class="transparent-row">
+              <td colspan="7" class="transparent-cell">
+                <button class="boxlight" onclick="submitData()">Submit</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </main>
+
+    <!-- Include Footer -->
+    <%- include('partials/footer') %>
+
+    <script>
+      let existingSkills = []; // Global variable to store existing skills
+      let newSkills = []; // Global variable to track new rows added manually
+
+      // Function to fetch skills
+      async function fetchSkills() {
+        try {
+          const response = await fetch("/api/skills");
+          if (!response.ok)
+            throw new Error("fetchSkills - Failed to fetch skills");
+
+          const skills = await response.json();
+          existingSkills = skills; // Populate global variable
+          renderSkillsTable(existingSkills, newSkills); // Render table with fetched data
+        } catch (error) {
+          console.error("Error fetching skills:", error);
+        }
+      }
+
+      // Function to add a new row
+      function addNewRow() {
+        newSkills.push({
+          skill: "",
+          proficiency: "Beginner",
+          certification: "",
+          authority: "",
+          dateIssued: "",
+        });
+
+        // Re-render the table with updated rows
+        renderSkillsTable(existingSkills, newSkills);
+      }
+
+      // Function to delete a row and make a DELETE request to the backend
+      async function deleteRow(index) {
+        let skillId = "";
+        if (index < existingSkills.length) {
+          // For existing skills, we get the skill ID
+          skillId = existingSkills[index]._id;
+          // Remove from existing skills
+          existingSkills.splice(index, 1);
+        } else {
+          // For new skills, just remove the row locally
+          newSkills.splice(index - existingSkills.length, 1);
+        }
+
+        // Re-render the table
+        renderSkillsTable(existingSkills, newSkills);
+
+        if (skillId) {
+          // Send DELETE request to the server to remove the skill from the database
+          try {
+            const response = await fetch(`/api/skills/${skillId}`, {
+              method: "DELETE",
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to delete skill");
+            }
+
+            alert("Skill successfully deleted!");
+          } catch (error) {
+            console.error("Error deleting skill:", error);
+            alert("Failed to delete skill. Please try again.");
+          }
+        }
+      }
+
+      // Function to render the skills table
+      function renderSkillsTable(existingSkills = [], newSkills = []) {
+        const skillsTable = document.getElementById("skills-list");
+        skillsTable.innerHTML = ""; // Clear the table
+
+        // Combine existing and new skills
+        const allSkills = [...existingSkills, ...newSkills];
+
+        // Render each skill as a row
+        allSkills.forEach((skill, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+      <td>${index + 1}</td>
+      <td>
+        <input type="text" value="${
+          skill.skill || ""
+        }" placeholder="Skill" data-index="${index}" onchange="updateSkill(event)">
+      </td>
+      <td>
+        <select data-index="${index}" onchange="updateSkill(event)">
+          <option value="Beginner" ${
+            skill.proficiency === "Beginner" ? "selected" : ""
+          }>Beginner</option>
+          <option value="Intermediate" ${
+            skill.proficiency === "Intermediate" ? "selected" : ""
+          }>Intermediate</option>
+          <option value="Advanced" ${
+            skill.proficiency === "Advanced" ? "selected" : ""
+          }>Advanced</option>
+        </select>
+      </td>
+      <td>
+        <input type="text" value="${
+          skill.certification || ""
+        }" placeholder="Certification" data-index="${index}" onchange="updateSkill(event)">
+      </td>
+      <td>
+        <input type="text" value="${
+          skill.authority || ""
+        }" placeholder="Authority" data-index="${index}" onchange="updateSkill(event)">
+      </td>
+      <td>
+        <input type="date" value="${
+          skill.dateIssued || ""
+        }" data-index="${index}" onchange="updateSkill(event)">
+      </td>
+      <td>
+        <button class="no-border" onclick="deleteRow(${index})">
+          <img src="/img/Delete-Bin.png" alt="Delete Row" class="iconstyle" />
+        </button>
+      </td>
+    `;
+          skillsTable.appendChild(row);
+        });
+      }
+
+      // Helper function to update skills
+      function updateSkill(event) {
+        const element = event.target; // Get the element that triggered the event
+        const index = parseInt(element.getAttribute("data-index"), 10); // Get the index from data-index
+
+        if (index === null || isNaN(index)) {
+          console.error("Index not found.");
+          return;
+        }
+
+        // Determine if the index belongs to an existing skill or a new skill
+        const isExistingSkill = index < existingSkills.length;
+        const skill = isExistingSkill
+          ? existingSkills[index]
+          : newSkills[index - existingSkills.length];
+
+        // Update the corresponding skill object based on the field type
+        if (element.tagName.toLowerCase() === "input") {
+          if (element.type === "text") {
+            // For text inputs (skill, certification, authority)
+            skill[element.name || element.placeholder.toLowerCase()] =
+              element.value;
+          } else if (element.type === "date") {
+            // For date inputs
+            skill.dateIssued = element.value;
+          }
+        } else if (element.tagName.toLowerCase() === "select") {
+          // For select elements (proficiency dropdown)
+          skill.proficiency = element.value;
+        }
+
+        // Optionally re-render the table to reflect updates (though it's already dynamic)
+        renderSkillsTable(existingSkills, newSkills);
+      }
+
+      // Function to validate if all fields are filled
+      function validateSkill(skill) {
+        return (
+          skill.skill.trim() !== "" &&
+          skill.proficiency !== "" &&
+          skill.certification.trim() !== "" &&
+          skill.authority.trim() !== "" &&
+          skill.dateIssued !== ""
+        );
+      }
+
+      // Function to submit the data
+      async function submitData() {
+        const allSkillsToSubmit = [];
+
+        // Collect modified existing skills
+        for (const skill of existingSkills) {
+          if (skill._id) {
+            // Update existing skills (with _id)
+            allSkillsToSubmit.push({
+              ...skill,
+              action: "update",
+            });
+          }
+        }
+
+        // Collect new skills
+        for (const skill of newSkills) {
+          if (validateSkill(skill)) {
+            allSkillsToSubmit.push({
+              ...skill,
+              action: "create",
+            });
+          } else {
+            alert("newSkills Please fill in all fields for the new skill.");
+            return;
+          }
+        }
+
+        // Submit data to backend
+        try {
+          for (const skill of allSkillsToSubmit) {
+            const endpoint =
+              skill.action === "create"
+                ? "/api/skills"
+                : `/api/skills/${skill._id}`;
+            const method = skill.action === "create" ? "POST" : "PUT";
+
+            const response = await fetch(endpoint, {
+              method,
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(skill),
+            });
+
+            if (!response.ok) {
+              throw new Error(
+                `Failed to ${skill.action} skill: ${skill.skill}`
+              );
+            }
+          }
+
+          alert("Skills updated/added successfully!");
+          location.reload(); // Refresh the page to show updated data
+        } catch (error) {
+          console.error("Error submitting skills:", error);
+          alert("Failed to submit skills. Please try again.");
+        }
+      }
+
+      // Fetch and initialize skills table when page loads
+      document.addEventListener("DOMContentLoaded", async () => {
+        await fetchSkills(); // Fetch skills and render table
+      });
+    </script>
+  </body>
+</html>

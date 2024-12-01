@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>TechFolio</title>
+  </head>
+
+  <body>
+    <header>
+      <img src="/img/image-1.png" alt="logo" />
+      <h1>TechFolio</h1>
+      <p><a href="../index.html">Log Out</a></p>
+    </header>
+    <main>
+      <div class="student">
+        <h3>STUDENT'S PROFILE</h3>
+      </div>
+      <div><hr /></div>
+      <div class="admincontainer">
+        <div>
+          <a href="/studentadmin" class="box">STUDENT'S LIST</a>
+        </div>
+        <div>
+          <a href="skillsadmin.html" class="box">SKILL</a>
+        </div>
+        <div>
+          <a href="search.html" class="box selected">SEARCH BY SKILL</a>
+        </div>
+        <div>Admin</div>
+      </div>
+
+      <datalist id="PROFICIENCY">
+        <option value="Beginner"></option>
+        <option value="Intermediate"></option>
+        <option value="Advanced"></option>
+      </datalist>
+
+      <datalist id="SKILLS">
+        <option value="Java"></option>
+        <option value="C++"></option>
+        <option value="Python"></option>
+      </datalist>
+
+      <div class="search">
+        <div class="skill_search">
+          <p>Skill</p>
+          <input type="text" list="SKILLS" placeholder="Select skill" />
+        </div>
+        <div class="proficiency_search">
+          <p>Proficiency</p>
+          <input
+            type="text"
+            list="PROFICIENCY"
+            placeholder="Select proficiency"
+          />
+        </div>
+      </div>
+
+      <div class="search">
+        <a href="student-list-by-skills.html" class="boxlight">Search</a>
+      </div>
+    </main>
+
+    <footer>
+      <div class="social_all">
+        <hr />
+        <div class="social">
+          <a href="https://www.linkedin.com/school/bml-munjal-university/"
+            ><img src="../img/linkedin.png" alt="linkedin"
+          /></a>
+          <a href="https://www.facebook.com/BMLMunjalUniversity" target="_blank"
+            ><img src="../img/Facebook-logo.png" alt="facebook"
+          /></a>
+          <a
+            href="https://x.com/BMLUniv?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor"
+            target="_blank"
+            ><img src="../img/twitter (1).png" alt="twitter"
+          /></a>
+          <a href="https://www.youtube.com/user/BMLMunjalUniv" target="_blank"
+            ><img src="../img/youtube (1).png" alt="youtube"
+          /></a>
+          <a
+            href="https://www.instagram.com/bmlmunjaluniversity/?hl=en"
+            target="_blank"
+            ><img src="../img/instagram (1).png" alt="instagram"
+          /></a>
+        </div>
+        <hr />
+      </div>
+      <div class="copyright">
+        <h2>TechFolio</h2>
+        <h6>Copyright © 2024 AJKTech</h6>
+      </div>
+    </footer>
+  </body>
+</html>

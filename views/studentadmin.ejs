@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>TechFolio-Admin</title>
+  </head>
+
+  <body>
+    <!-- Include Header -->
+    <%- include('partials/header') %>
+
+    <main>
+      <div class="student">
+        <h3>STUDENT'S PROFILE</h3>
+      </div>
+      <div>
+        <hr />
+      </div>
+      <div class="admincontainer">
+        <div>
+          <a href="/studentadmin" class="box selected">STUDENT'S LIST</a>
+        </div>
+        <div>
+          <a href="/admin/skillsadmin.html" class="box">SKILL</a>
+        </div>
+        <div>
+          <a href="/admin/search.html" class="box">SEARCH BY SKILL</a>
+        </div>
+        <div style="text-align: end">Admin</div>
+      </div>
+
+      <div style="overflow-x: auto">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Registration Number</th>
+              <th>Email ID</th>
+              <th>Password</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="studentTable">
+            <!-- Student rows will be dynamically inserted here -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>
+                <button class="no-border" onclick="addRow()">
+                  <img
+                    src="/img/plusbutton.png"
+                    alt="Add Row"
+                    class="iconstyle"
+                  />
+                </button>
+              </td>
+              <td colspan="5"></td>
+            </tr>
+            <tr class="transparent-row">
+              <td colspan="6" class="transparent-cell">
+                <button class="boxlight" onclick="submitData()">Submit</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </main>
+
+    <!-- Include Footer -->
+    <%- include('partials/footer') %>
+
+    <script>
+      let students = []; // Store fetched students
+      let newRows = []; // Store newly added rows
+
+      // Fetch students from JSON and render table
+      async function fetchStudentsData() {
+        try {
+          const response = await fetch("/data/student.json");
+          if (!response.ok) throw new Error("Failed to fetch student data");
+          students = await response.json();
+          renderStudentTable();
+        } catch (error) {
+          console.error(error);
+          showError("Could not fetch student data. Please try again later.");
+        }
+      }
+
+      // Render the student table dynamically
+      function renderStudentTable() {
+        const studentTable = document.getElementById("studentTable");
+        studentTable.innerHTML = ""; // Clear existing rows
+
+        // Render existing students
+        students.forEach((student, index) => {
+          studentTable.appendChild(createStudentRow(student, index, false));
+        });
+
+        // Render new rows
+        newRows.forEach((newRow, index) => {
+          studentTable.appendChild(createStudentRow(newRow, index, true));
+        });
+      }
+
+      // Create a table row for a student
+      function createStudentRow(student, index, isNew) {
+        const row = document.createElement("tr");
+
+        row.innerHTML = `
+    <td></td>
+    <td>${
+      isNew
+        ? `<input type="text" value="${student.name || ""}" placeholder="Name">`
+        : student.name
+    }</td>
+    <td>${
+      isNew
+        ? `<input type="text" value="${
+            student.regNumber || ""
+          }" placeholder="Reg Number">`
+        : student.regNumber
+    }</td>
+    <td>${
+      isNew
+        ? `<input type="email" value="${
+            student.email || ""
+          }" placeholder="Email">`
+        : student.email
+    }</td>
+    <td>${
+      isNew
+        ? `<input type="text" value="${
+            student.password || ""
+          }" placeholder="Password">`
+        : student.password
+    }</td>
+    <td>
+      <button class="no-border" onclick="${
+        isNew ? `deleteNewRow(${index})` : `deleteStudent(${index})`
+      }">
+        <img src="/img/Delete-Bin.png" alt="Delete Row" class="iconstyle">
+      </button>
+    </td>
+  `;
+        return row;
+      }
+
+      // Add a new row
+      function addRow() {
+        newRows.push({ name: "", regNumber: "", email: "", password: "" });
+        renderStudentTable();
+      }
+
+      // Delete an existing student
+      function deleteStudent(index) {
+        students.splice(index, 1);
+        renderStudentTable();
+      }
+
+      // Delete a new row
+      function deleteNewRow(index) {
+        newRows.splice(index, 1);
+        renderStudentTable();
+      }
+
+      // Submit new rows with validation
+      // Submit new rows with validation
+      function submitData() {
+        const errors = [];
+        const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+        // Sync newRows with user inputs from the DOM
+        const rows = document.querySelectorAll("#studentTable tr");
+        newRows = []; // Clear newRows to populate with updated data
+
+        rows.forEach((row, index) => {
+          // Skip existing students
+          if (index < students.length) return;
+
+          // Get inputs for new rows
+          const nameInput = row.querySelector("input[placeholder='Name']");
+          const regNumberInput = row.querySelector(
+            "input[placeholder='Reg Number']"
+          );
+          const emailInput = row.querySelector("input[placeholder='Email']");
+          const passwordInput = row.querySelector(
+            "input[placeholder='Password']"
+          );
+
+          const newRow = {
+            name: nameInput.value.trim(),
+            regNumber: regNumberInput.value.trim(),
+            email: emailInput.value.trim(),
+            password: passwordInput.value.trim(),
+          };
+
+          // Validate the inputs
+          if (
+            !newRow.name ||
+            !newRow.regNumber ||
+            !newRow.email ||
+            !newRow.password
+          ) {
+            errors.push(`Row ${index + 1}: All fields must be filled.`);
+          } else if (!emailPattern.test(newRow.email)) {
+            errors.push(`Row ${index + 1}: Invalid email format.`);
+          } else {
+            // Add valid row to newRows
+            newRows.push(newRow);
+          }
+        });
+
+        if (errors.length) {
+          showError(errors.join("\n"));
+        } else {
+          // Push new rows to students array
+          students.push(...newRows);
+
+          // Clear newRows and re-render table
+          newRows = [];
+          renderStudentTable();
+          showSuccess("Students added successfully!");
+        }
+      }
+
+      // Display error messages
+      function showError(message) {
+        alert(`Error: ${message}`);
+      }
+
+      // Display success messages
+      function showSuccess(message) {
+        alert(message);
+      }
+
+      // Initialize table on page load
+      document.addEventListener("DOMContentLoaded", fetchStudentsData);
+    </script>
+  </body>
+</html>

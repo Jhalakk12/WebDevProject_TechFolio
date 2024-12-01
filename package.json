@@ -1,0 +1,25 @@
+{
+  "name": "techfolio-express-mongo-ejs-handlebar",
+  "version": "1.0.0",
+  "description": "Tech Folio app using html, css, JavaScript, Express, EJS, Handlebars, and Mongoose",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "dependencies": {
+    "ejs": "^3.1.9",
+    "express": "^4.18.2",
+    "express-handlebars": "^7.0.7",
+    "mongoose": "^7.5.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.7"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "author": "JK",
+  "keywords": [],
+  "license": "ISC"
+}

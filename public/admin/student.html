@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>TechFolio</title>
+  </head>
+
+  <body>
+    <header>
+      <img src="/img/image-1.png" alt="logo" />
+      <h1>TechFolio</h1>
+      <p><a href="/">Log Out</a></p>
+    </header>
+
+    <main>
+      <div class="student">
+        <h3>STUDENT'S PROFILE</h3>
+      </div>
+      <div>
+        <hr />
+      </div>
+      <div class="admincontainer">
+        <div>
+          <a href="/admin/student.html" class="box selected">STUDENT'S LIST</a>
+        </div>
+        <div>
+          <a href="/admin/skillsadmin.html" class="box">SKILL</a>
+        </div>
+        <div>
+          <a href="/admin/search.html" class="box">SEARCH BY SKILL</a>
+        </div>
+        <div style="text-align: end">Admin</div>
+      </div>
+
+      <div style="overflow-x: auto">
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th>Name</th>
+              <th>Registration Number</th>
+              <th>Email ID</th>
+              <th>Password</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="studentTable">
+            <!-- Student rows will be dynamically inserted here -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>
+                <button class="no-border" onclick="addRow()">
+                  <img src="/img/plusbutton.png" alt="Add Row" class="iconstyle" />
+                </button>
+              </td>
+              <td colspan="5"></td>
+            </tr>
+            <tr class="transparent-row">
+              <td colspan="6" class="transparent-cell">
+                <button class="boxlight" onclick="submitData()">Submit</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </main>
+
+    <footer>
+      <div class="social_all">
+        <hr />
+        <div class="social">
+          <a href="https://www.linkedin.com/school/bml-munjal-university/"><img src="../img/linkedin.png" alt="linkedin" /></a>
+          <a href="https://www.facebook.com/BMLMunjalUniversity" target="_blank"><img src="../img/Facebook-logo.png" alt="facebook" /></a>
+          <a href="https://x.com/BMLUniv?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" target="_blank"><img src="../img/twitter (1).png" alt="twitter" /></a>
+          <a href="https://www.youtube.com/user/BMLMunjalUniv" target="_blank"><img src="../img/youtube (1).png" alt="youtube" /></a>
+          <a href="https://www.instagram.com/bmlmunjaluniversity/?hl=en" target="_blank"><img src="../img/instagram (1).png" alt="instagram" /></a>
+        </div>
+        <hr />
+      </div>
+      <div class="copyright">
+        <h2>TechFolio</h2>
+        <h6>Copyright © 2024 AJKTech</h6>
+      </div>
+    </footer>
+
+    <script>
+      // Inline JSON Data for existing students
+      const students = [
+        {
+          name: "Henry Gupta",
+          regNumber: "2305717",
+          email: "henry_gupta@gmail.com",
+          password: "henr12gu"
+        },
+        {
+          name: "Vedaant Yadav",
+          regNumber: "2305711",
+          email: "vedaant_yadav@gmail.com",
+          password: "veda13ya"
+        },
+        {
+          name: "Lily Bloom",
+          regNumber: "2305712",
+          email: "lily_bloom@gmail.com",
+          password: "lily14bl"
+        },
+        {
+          name: "Jack Denny",
+          regNumber: "2305713",
+          email: "jack_danny@gmail.com",
+          password: "jack15de"
+        },
+        {
+          name: "Hermonie Granger",
+          regNumber: "2305714",
+          email: "hermonie_granger@gmail.com",
+          password: "herm16gr"
+        },
+        {
+          name: "Ginny Weasley",
+          regNumber: "2305715",
+          email: "ginny_weasley@gmail.com",
+          password: "ginn17we"
+        }
+      ];
+
+      // Array to hold new student rows (editable)
+      let newRows = [];
+
+      // Function to render the student table
+      function renderStudentTable() {
+        const studentTable = document.getElementById("studentTable");
+        studentTable.innerHTML = ""; // Clear the existing rows
+
+        // Render existing student data
+        students.forEach((student, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td></td>
+            <td><a href="../skill.html">${student.name}</a></td>
+            <td>${student.regNumber}</td>
+            <td>${student.email}</td>
+            <td>${student.password}</td>
+            <td>
+              <button class="no-border" onclick="deleteStudent(${index})">
+                <img src="../img/Delete-Bin.png" alt="Delete Row" class="iconstyle" />
+              </button>
+            </td>
+          `;
+          studentTable.appendChild(row);
+        });
+
+        // Render new rows for student entry
+        newRows.forEach((newRow, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td></td>
+            <td><input type="text" value="${newRow.name}" placeholder="Name"></td>
+            <td><input type="text" value="${newRow.regNumber}" placeholder="Reg Number"></td>
+            <td><input type="email" value="${newRow.email}" placeholder="Email"></td>
+            <td><input type="text" value="${newRow.password}" placeholder="Password"></td>
+            <td>
+              <button class="no-border" onclick="deleteNewRow(${index})">
+                <img src="../img/Delete-Bin.png" alt="Delete Row" class="iconstyle" />
+              </button>
+            </td>
+          `;
+          studentTable.appendChild(row);
+        });
+      }
+
+      // Function to delete an existing student row
+      function deleteStudent(index) {
+        students.splice(index, 1);
+        renderStudentTable();
+      }
+
+      // Function to delete a new row
+      function deleteNewRow(index) {
+        newRows.splice(index, 1);
+        renderStudentTable();
+      }
+
+      // Function to add a new row (editable)
+      function addRow() {
+        newRows.push({
+          name: "",
+          regNumber: "",
+          email: "",
+          password: ""
+        });
+        renderStudentTable();
+      }
+
+      // Function to handle form submission with validation
+      function submitData() {
+        let isValid = true;
+        const errorMessages = [];
+
+        // Loop over newRows and retrieve current values from inputs
+        document.querySelectorAll("#studentTable tr").forEach((row, index) => {
+          if (index >= students.length) {
+            const name = row.querySelector("input[placeholder='Name']").value;
+            const regNumber = row.querySelector("input[placeholder='Reg Number']").value;
+            const email = row.querySelector("input[placeholder='Email']").value;
+            const password = row.querySelector("input[placeholder='Password']").value;
+
+            // Check if all fields are filled
+            if (!name || !regNumber || !email || !password) {
+              isValid = false;
+              errorMessages.push("All fields must be filled out.");
+            }
+
+            // Validate email format
+            const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if (email && !emailPattern.test(email)) {
+              isValid = false;
+              errorMessages.push("Please enter a valid email address.");
+            }
+
+            // If validation is successful, push data to students array
+            if (isValid) {
+              students.push({ name, regNumber, email, password });
+            }
+          }
+        });
+
+        // If validation failed, show error messages
+        if (!isValid) {
+          alert(errorMessages.join("\n"));
+        } else {
+          // Clear newRows and re-render the table
+          newRows = [];
+          renderStudentTable();
+        }
+      }
+
+      // Initial render of the table
+      renderStudentTable();
+    </script>
+  </body>
+</html>

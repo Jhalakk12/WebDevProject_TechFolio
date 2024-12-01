@@ -1,0 +1,39 @@
+[
+    {
+      "name": "Henry Gupta",
+      "regNumber": "2305717",
+      "email": "henry_gupta@gmail.com",
+      "password": "henr12gu"
+    },
+    {
+      "name": "Vedaant Yadav",
+      "regNumber": "2305711",
+      "email": "vedaant_yadav@gmail.com",
+      "password": "veda13ya"
+    },
+    {
+      "name": "Lily Bloom",
+      "regNumber": "2305712",
+      "email": "lily_bloom@gmail.com",
+      "password": "lily14bl"
+    },
+    {
+      "name": "Jack Denny",
+      "regNumber": "2305713",
+      "email": "jack_danny@gmail.com",
+      "password": "jack15de"
+    },
+    {
+      "name": "Hermonie Granger",
+      "regNumber": "2305714",
+      "email": "hermonie_granger@gmail.com",
+      "password": "herm16gr"
+    },
+    {
+      "name": "Ginny Weasley",
+      "regNumber": "2305715",
+      "email": "ginny_weasley@gmail.com",
+      "password": "ginn17we"
+    }
+  ]
+  

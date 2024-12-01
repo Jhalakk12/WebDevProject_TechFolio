@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/style.css" />
+    <title>TechFolio - Student Profile (Blogs)</title>
+  </head>
+
+  <body>
+    <!-- Include Header -->
+    <%- include('partials/header') %>
+
+    <main>
+      <div class="student">
+        <h3>STUDENT'S PROFILE</h3>
+        <p>Student's Registration Number: 23057XX</p>
+      </div>
+      <div><hr /></div>
+      <div class="container">
+        <div>
+          <a href="/skill" class="box">SKILLS</a>
+        </div>
+        <div>
+          <a href="/blog" class="box selected">BLOG / ARTICLE</a>
+        </div>
+      </div>
+
+      <!-- Table for Blog Entries -->
+       
+      <!-- adding a horizontal scrollbar  -->
+      <div style="overflow-x: auto">
+    
+        <table>
+          <thead>
+            <tr>
+              <th>S.No.</th>
+              <th>BLOG TITLE</th>
+              <th>BLOG LINK</th>
+              <th>ACTIONS</th>
+            </tr>
+          </thead>
+          <tbody id="blogs-list">
+            <!-- Rows will be dynamically inserted here -->
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>
+                <button class="no-border" onclick="addNewRow()">
+                  <img src="/img/plusbutton.png" alt="Add Row" class="iconstyle" />
+                </button>
+              </td>
+              <td colspan="3"></td>
+            </tr>
+            <tr class="transparent-row">
+              <td colspan="4" class="transparent-cell">
+                <button class="boxlight" onclick="submitData()">Submit</button>
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </main>
+
+    <!-- Include Footer -->
+    <%- include('partials/footer') %>
+
+    <script>
+      let existingBlogs = []; // Store fetched blogs
+      let newBlogs = []; // Store new blogs added dynamically
+
+      // Fetch blogs from the server
+      async function fetchBlogs() {
+        try {
+          const response = await fetch("/api/blog");
+          if (!response.ok) {
+            throw new Error("Failed to fetch blogs.");
+          }
+          existingBlogs = await response.json();
+          renderBlogsTable();
+        } catch (error) {
+          console.error("Error fetching blogs:", error);
+        }
+      }
+
+      // Add a new row for creating a blog
+      function addNewRow() {
+        newBlogs.push({ title: "", link: "" });
+        renderBlogsTable();
+      }
+
+      // Function to delete a row and make a DELETE request to the backend
+      async function deleteRow(index) {
+        let skillId = "";
+        if (index < existingBlogs.length) {
+          // For existing skills, we get the skill ID
+          skillId = existingBlogs[index]._id;
+          // Remove from existing skills
+          existingBlogs.splice(index, 1);
+        } else {
+          // For new skills, just remove the row locally
+          newBlogs.splice(index - existingBlogs.length, 1);
+        }
+
+        // Re-render the table
+        renderBlogsTable(existingBlogs, newBlogs);
+
+        if (skillId) {
+          // Send DELETE request to the server to remove the blog from the database
+          try {
+            const response = await fetch(`/api/blog/${skillId}`, {
+              method: "DELETE",
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to delete blog");
+            }
+
+            alert("blog successfully deleted!");
+          } catch (error) {
+            console.error("Error deleting blog:", error);
+            alert("Failed to delete blog. Please try again.");
+          }
+        }
+      }
+
+      // Render the blog table
+      function renderBlogsTable() {
+        const blogsList = document.getElementById("blogs-list");
+        blogsList.innerHTML = ""; // Clear the table
+
+        // Render existing blogs
+        existingBlogs.forEach((blog, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${index + 1}</td>
+            <td>${blog.title}</td>
+            <td><a href="${blog.link}" target="_blank">${blog.link}</a></td>
+          <td>
+        <button class="no-border" onclick="deleteRow(${index})">
+          <img src="/img/Delete-Bin.png" alt="Delete Row" class="iconstyle" />
+        </button>
+      </td>
+          `;
+          blogsList.appendChild(row);
+        });
+
+        // Render new blog rows
+        newBlogs.forEach((blog, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td></td>
+            <td><input type="text" value="${blog.title}" placeholder="Blog Title" onchange="updateNewBlog(${index}, 'title', this.value)" /></td>
+            <td><input type="url" value="${blog.link}" placeholder="Blog Link" onchange="updateNewBlog(${index}, 'link', this.value)" /></td>
+            <td>
+              <button class="no-border" onclick="deleteNewRow(${index})">
+                <img src="/img/Delete-Bin.png" alt="Delete Row" class="iconstyle" />
+              </button>
+            </td>
+          `;
+          blogsList.appendChild(row);
+        });
+      }
+
+      // Update a new blog in the newBlogs array
+      function updateNewBlog(index, field, value) {
+        newBlogs[index][field] = value;
+      }
+
+      // Delete a new blog row
+      function deleteNewRow(index) {
+        newBlogs.splice(index, 1);
+        renderBlogsTable();
+      }
+
+      // Submit all new blogs to the server
+      async function submitData() {
+        try {
+          for (const blog of newBlogs) {
+            if (!blog.title || !blog.link) {
+              alert("All fields are required.");
+              return;
+            }
+
+            const response = await fetch("/api/blog", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(blog),
+            });
+
+            if (!response.ok) {
+              throw new Error(`Failed to save blog: ${blog.title}`);
+            }
+          }
+
+          alert("Blogs saved successfully!");
+          location.reload(); // Reload to refresh the table
+        } catch (error) {
+          console.error("Error saving blogs:", error);
+          alert("Failed to save blogs. Please try again.");
+        }
+      }
+
+      // Initialize the table by fetching blogs
+      document.addEventListener("DOMContentLoaded", fetchBlogs);
+    </script>
+  </body>
+</html>

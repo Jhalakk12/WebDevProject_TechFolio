@@ -1,0 +1,434 @@
+login.body {
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#logo {
+  height: 88px;
+  position: fixed;
+  z-index: 2;
+}
+
+.login > h2 {
+  font-size: 2.5em;
+}
+
+body {
+  overflow: hidden;
+  margin: 0;
+  height: 100vh;
+  background-color: #e8fefb;
+  display: grid;
+  grid-template-rows: 120px 1fr 126px;
+}
+
+#TechFolio {
+  text-align: center;
+  font-size: 4em;
+  font-weight: 700;
+  font-family: "Inika", sans-serif;
+  color: white;
+}
+
+.content {
+  display: grid;
+  grid-template-columns: 1fr 2px 1fr;
+  align-items: center;
+  margin-left: 10%;
+  margin-right: 10%;
+  color: white;
+  gap: 20px;
+  padding: 20px;
+}
+
+.content > hr {
+  height: 100%;
+  background-color: white;
+}
+
+.welcome > h2 {
+  font-size: 3em;
+  font-family: "Inika", sans-serif;
+  color: white;
+  margin: 0;
+}
+
+.welcome {
+  transform: translateY(-50%);
+  margin-right: 10%;
+}
+
+.welcome > p {
+  transform: translateX(5%);
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login > img {
+  max-width: 15%;
+  height: auto;
+}
+
+.login_form {
+  display: grid;
+  grid-template: auto / auto auto;
+  gap: 20px;
+  column-gap: 50px;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+
+.login_form1 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+.login_form > h4 {
+  font-size: larger;
+  font-family: "Inter", sans-serif;
+  margin: 0;
+}
+
+.login_form1 > input {
+  height: 35px;
+  width: 273px;
+  padding: 4px;
+  border-radius: 8px;
+}
+
+.login_form input {
+  width: 110%;
+  padding: 4px;
+  margin: 5px 0;
+  box-sizing: border-box;
+}
+
+.login-right-align {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px; /* Adjust as needed */
+  padding-left: 100px;
+  text-align: center;
+}
+
+header {
+  background: url("/img/header.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  position: relative;
+}
+
+header > img {
+  height: 88px;
+}
+
+header > h1 {
+  position: absolute;
+  bottom: 0%;
+  right: 0px;
+  left: 0px;
+  margin: auto;
+  text-align: center;
+
+  font-size: 4em;
+  font-weight: 700;
+  font-family: "Inika", sans-serif;
+  color: white;
+}
+
+header > p {
+  text-align: end;
+  position: fixed;
+  right: 0;
+  z-index: 2;
+}
+
+header > p > a {
+  position: fixed;
+  right: 0;
+  transform: translateY(100%);
+  text-align: end;
+  padding-right: 10px;
+  font-weight: bolder;
+  font-size: larger;
+  color: red;
+}
+
+header > p > a:hover {
+  color: blue;
+  text-decoration: underline;
+}
+
+footer {
+  background-color: #4682b4;
+  opacity: 0.8;
+  display: flex;
+  flex-direction: column;
+  padding-top: 10px;
+}
+
+.social_all {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.social_all > hr {
+  width: 250px;
+  margin: 0;
+  height: 1px;
+  background-color: white;
+}
+
+.social {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.social > a {
+  color: white;
+  font-size: 2em;
+}
+
+.social img {
+  width: 40px;
+  /* Set the desired width */
+  height: 40px;
+  /* Set the desired height */
+  object-fit: cover;
+  /* Ensure the image fits within the specified dimensions */
+  margin: 0 10px;
+  /* Optional: Add some spacing between the images */
+}
+
+.copyright {
+  color: white;
+  font-size: 1.5em;
+  text-align: center;
+  margin: 0;
+}
+
+.copyright > * {
+  margin: 0;
+}
+
+.student > * {
+  margin: 0;
+  padding: 0;
+}
+
+.student {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
+}
+
+.student > h3 {
+  font-size: 2em;
+  font-family: "Inika", sans-serif;
+}
+
+.student > hr {
+  width: 80%;
+}
+
+.container {
+  display: flex;
+  margin-left: 30px;
+  justify-content: left;
+  gap: 20px;
+  align-items: center;
+}
+
+.admincontainer {
+  display: flex;
+  margin-left: 30px;
+  justify-content: left;
+  gap: 20px;
+  align-items: center;
+}
+.admincontainer div:last-child {
+  margin-left: auto;
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.box {
+  text-decoration: none; /* Remove underline */
+  text-align: center;
+  height: 50px;
+  width: 180px;
+  background-color: #2668a4;
+  display: flex;
+  flex: 1 1 30%;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px; /* Make box rounded */
+  color: white;
+}
+
+@media (max-width: 600px) {
+  .box {
+    flex: 1 1 100%;
+  }
+  table,
+  thead,
+  tbody,
+  th,
+  td,
+  tr {
+    display: block;
+  }
+  th,
+  td {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  td[data-label]:before {
+    content: attr(data-label);
+    font-weight: bold;
+    display: block;
+  }
+}
+
+.selected {
+  background-color: #0056b3; /* Different background color for selected link */
+  font-weight: bold; /* Make the text bold */
+}
+
+.iconstyle {
+  width: 20px;
+  height: 20px;
+}
+.no-border {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.boxlight {
+  text-decoration: none; /* Remove underline */
+  color: white;
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #8cd9f8;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.transparent-row {
+  background-color: rgba(255, 255, 255, 0); /* Fully transparent background */
+}
+.transparent-cell {
+  background-color: rgba(
+    255,
+    255,
+    255,
+    0
+  ); /* Fully transparent background for td */
+  text-align: right;
+}
+
+.box > p {
+  color: white;
+  font-size: 1em;
+  margin: 0;
+  line-height: 50px; /* Ensures text is vertically centered */
+}
+
+table {
+  margin-left: 30px;
+  margin-top: 30px;
+  table-layout: fixed;
+}
+
+colgroup col {
+  width: 33.33%;
+}
+input {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+thead {
+  background-color: #beccca;
+  height: 56px;
+}
+
+tbody {
+  height: 29px;
+  margin: 0;
+}
+
+thead > tr > th {
+  padding: 10px;
+}
+
+tbody > tr > td {
+  padding: 2px;
+  text-align: center;
+  padding-left: 10px;
+  padding-right: 10px;
+  background-color: white;
+
+  input {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    text-align: center;
+    font-weight: lighter;
+  }
+}
+
+.skill_search {
+  display: flex;
+  flex-direction: column;
+}
+
+.skill_search > input,
+.proficiency_search > input {
+  padding: 10px;
+  background-color: white;
+
+  width: 100%;
+  height: 40px;
+  border: none;
+  font-weight: lighter;
+
+  border-radius: 8px;
+}
+
+.search {
+  display: flex;
+
+  gap: 50px;
+  margin-left: 30px;
+  margin-top: 30px;
+}
+
+#search_button {
+  padding: 10px;
+  background-color: #2668a4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 20px;
+  margin-left: 30px;
+}
